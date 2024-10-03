@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -102,6 +104,21 @@ public class Principal {
                                 );
                 }
         }
+        
+        // obter média de avaliações das temporadas
+        Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(episodio -> episodio.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getAvaliacao)));
+        System.out.println(avaliacoesPorTemporada);
+
+        // estatíticas
+        DoubleSummaryStatistics estatisticas = episodios.stream()
+                .filter(episodio -> episodio.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+        System.out.println("Média:" + estatisticas.getAverage());
+        System.out.println("Nota do pior avaliado:" + estatisticas.getMin());
+        System.out.println("Nota do melhor avaliado:" + estatisticas.getMax());
+        System.out.println("Quantidade:" + estatisticas.getCount());
 
         // obter episódios a partir de determinado ano
         System.out.println("A partir de que ano você deseja ver os episódios? ");
