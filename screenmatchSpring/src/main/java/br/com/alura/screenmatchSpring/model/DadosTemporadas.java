@@ -1,6 +1,7 @@
 package br.com.alura.screenmatchSpring.model;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,4 +9,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record DadosTemporadas(
     @JsonAlias("Season") Integer numero,
     @JsonAlias("Episodes") List<DadosEpisodio> episodios
-) { }
+) {}
