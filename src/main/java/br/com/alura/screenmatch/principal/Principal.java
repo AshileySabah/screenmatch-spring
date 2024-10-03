@@ -71,15 +71,36 @@ public class Principal {
         // consultar por nome do episódio
         System.out.println("Digite o nome do episódio que deseja encontrar:");
         String trechoTitulo = scanner.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(episodio -> episodio.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
-                .findFirst();
         
-        if(episodioBuscado.isPresent()) {
+        // retornar o primeiro match encontrado
+        List<Episodio> episodiosBuscados = episodios.stream()
+                .filter(episodio -> episodio.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
+                .collect(Collectors.toList());
+
+        Optional<Episodio> primeiraReferenciaEpisodioBuscado = episodiosBuscados.stream().findFirst();
+        if(primeiraReferenciaEpisodioBuscado.isPresent()) {
                 System.out.println("Episódio encontrado!");
-                System.out.println("Episódio: " + episodioBuscado.get().getTitulo() + " (Temporada " + episodioBuscado.get().getTemporada() + ")");
+                System.out.println(
+                        "Episódio: " + primeiraReferenciaEpisodioBuscado.get().getTitulo() +
+                        " (Temporada " + primeiraReferenciaEpisodioBuscado.get().getTemporada() + ")"
+                );
         } else {
                 System.out.println("Episódio não encontrado.");
+        }
+
+        // retornar os matches restantes
+        if(episodiosBuscados.size() > 1) {
+                System.out.println("Existem outros episódios com esse nome, deseja conferir? (S - Sim, N - Não)");
+                if(scanner.nextLine().equalsIgnoreCase("S")) {
+                        episodiosBuscados.stream()
+                                .filter(episodioBuscado -> !episodioBuscado.getTitulo().equalsIgnoreCase(primeiraReferenciaEpisodioBuscado.get().getTitulo()))
+                                .forEach(episodioBuscado -> 
+                                        System.out.println(
+                                                "Episódio: " + episodioBuscado.getTitulo() +
+                                                " (Temporada " + episodioBuscado.getTemporada() + ")"
+                                        )
+                                );
+                }
         }
 
         // obter episódios a partir de determinado ano
