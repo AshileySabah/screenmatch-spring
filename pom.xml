@@ -5,27 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.1.1</version>
 		<relativePath/>
 	</parent>
 	<groupId>br.com.alura</groupId>
-	<artifactId>screenmatchSpring</artifactId>
+	<artifactId>screenmatch</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>screenmatchSpring</name>
-	<description>Streaming service</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<name>screenmatch</name>
+	<description>Primeiro projeto Spring sem web</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -34,13 +21,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
