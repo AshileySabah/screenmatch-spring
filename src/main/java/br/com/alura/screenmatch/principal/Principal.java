@@ -25,26 +25,35 @@ public class Principal {
     private final String API_KEY = "&apikey=6585022c";
 
     public void exibeMenu(){
+        // consultar série
         System.out.println("Digite o nome da série para busca");
         var nomeSerie = scanner.nextLine();
+
         json = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
         DadosSerie dados = conversorDados.obterDados(json, DadosSerie.class);
+
         System.out.println(dados);
 
+        // obter todos os episódios de cada temporada
         List<DadosTemporada> temporadas = new ArrayList<>();
+
         for (int i = 1; i<=dados.totalTemporadas(); i++){
             json = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+") +"&season=" + i + API_KEY);
             DadosTemporada dadosTemporada = conversorDados.obterDados(json, DadosTemporada.class);
             temporadas.add(dadosTemporada);
         }
+
         temporadas.forEach(System.out::println);
+
         temporadas.forEach(temporada -> temporada.episodios().forEach(episodio -> System.out.println(episodio.titulo())));
+
+        // obter os 5 melhores episódios
+        System.out.println("Top 5 episódios");
 
         List<DadosEpisodio> dadosEpisodios = temporadas.stream()
                 .flatMap(temporada -> temporada.episodios().stream())
                 .collect(Collectors.toList());
 
-        System.out.println("Top 5 episódios");
         dadosEpisodios.stream()
                 .filter(episodio -> !episodio.avaliacao().equalsIgnoreCase("N/A"))
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
@@ -58,12 +67,14 @@ public class Principal {
 
         episodios.forEach(System.out::println);
 
+        // obter episódios a partir de determinado ano
         System.out.println("A partir de que ano você deseja ver os episódios? ");
         var ano = scanner.nextInt();
         scanner.nextLine();
 
         LocalDate dataBusca = LocalDate.of(ano, 1, 1);
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         episodios.stream()
                 .filter(episodio -> episodio.getDataLancamento() != null && episodio.getDataLancamento().isAfter(dataBusca))
                 .forEach(episodio -> System.out.println(
